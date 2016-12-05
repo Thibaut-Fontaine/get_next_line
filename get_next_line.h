@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 05:14:32 by tfontain          #+#    #+#             */
-/*   Updated: 2016/12/05 06:00:23 by tfontain         ###   ########.fr       */
+/*   Updated: 2016/12/05 07:50:59 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define BUFF_SIZE 32
+# define BUFF_SIZE 15
 
 int			get_next_line(const int fd, char **line);
-
+void		ft_putstr(char *str); // !!
 #endif
