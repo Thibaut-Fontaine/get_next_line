@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 20:36:22 by tfontain          #+#    #+#             */
-/*   Updated: 2016/12/06 10:48:56 by tfontain         ###   ########.fr       */
+/*   Updated: 2016/12/14 23:50:31 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,18 @@
 # define BUFF_SIZE 15
 
 int					get_next_line(const int fd, char **line);
+
+
+/*
+**  la liste est utilisee de maniere circulaire, parce-que c'est rigolo
+**
+*/
+
+typedef struct		s_endl
+{
+	int				fd;
+	char			*s;
+	struct s_endl	*next;
+}					t_endl;
 
 #endif
