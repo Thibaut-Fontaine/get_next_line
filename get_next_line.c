@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2016/12/15 03:45:40 by tfontain         ###   ########.fr       */
+/*   Updated: 2016/12/16 00:16:51 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char				*ft_realloc_str(char *str, size_t size)
 ** la liste est utilisee de maniere circulaire
 */
 
-t_endl				*ft_get_current(int fd, t_endl *current)
+t_endl				*ft_get_current(const int fd, t_endl *current)
 {
 	int				f_fd;
 	void			*tmp;
@@ -115,8 +115,9 @@ int					get_next_line(const int fd, char **line)
 	}
 	if (nl != -1)
 	{
-		current->s = malloc(nl);
+		current->s = malloc(sizeof(char) * (nl + 1));
 		ft_strncpy(current->s, *line + i, nl);
+		*(current->s + nl) = 0;
 		return (1);
 	}
 	return (0);
