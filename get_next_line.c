@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2016/12/16 05:48:02 by tfontain         ###   ########.fr       */
+/*   Updated: 2016/12/16 06:20:05 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,21 +99,40 @@ t_endl				*ft_get_current(const int fd, t_endl *current)
 /*
 ** je considere que line a deja ete alloue
 */
+// si un malloc foire renvoyer -1 !
 
 int					get_next_line(const int fd, char **line)
 {
 	static t_endl	*current = NULL;
-	char			*head;
+	unsigned int	index;
+	int				ret;
+	int				nl;
 
-	current = ft_get_current(fd, current);
-	*line = ft_realloc_str(*line, BUFF_SIZE);
-	head = *line;
-	while (read(fd, *line, BUFF_SIZE) == BUFF_SIZE)
+	if ((current = ft_get_current(fd, current)) == NULL)
+		return (-1);
+	if ((*line = ft_realloc_str(*line, BUFF_SIZE)) == NULL)
+		return (-1);
+	index = 0;
+	while ((ret = read(fd, &((*line)[index]), BUFF_SIZE)) == BUFF_SIZE)
 	{
-
-		*line = *line + BUFF_SIZE;
+		*line[index + BUFF_SIZE] = 0;
+		if ((nl = ft_find_nl(*line)) != -1)
+		{
+			ft_memcpy(current->s, &((*line)[nl]), ft_strlen(&((*line)[nl])));
+			if ((*line = ft_realloc_str(*line, nl)) == NULL)
+				return (-1);
+			return (1);
+		}
+		index = index + BUFF_SIZE;
+		if ((*line = ft_realloc_str(*line, index)) == NULL)
+			return (-1);
 	}
-	return (0);
+	if (ret == 0)
+	{
+		//free(current->s); // ?
+		return (0);
+	}
+	return (-1);
 }
 
 /*
