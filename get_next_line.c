@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2016/12/16 00:16:51 by tfontain         ###   ########.fr       */
+/*   Updated: 2016/12/16 03:35:53 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,11 @@ int					ft_find_nl(char *s)
 }
 
 /*
-** si str n'est pas NULL et que la taille de str est plus petit que size,
-** malloc de size, copie str dans le pt obtenu et free str
-** si size est plus petit que str ou qu'un malloc a foire, renvoie NULL
-** si str est NULL, renvoie malloc de size
-**
-** size ne doit pas compter le 0
+** - si str n'est pas NULL : malloc de size, copie size caracteres de str 
+** dans le pt obtenu, NUL-terminate le pt, puis free str
+** - si un malloc foire, renvoie NULL
+** - si str est NULL, renvoie malloc de size
+** ! size ne doit pas compter le 0
 */
 
 char				*ft_realloc_str(char *str, size_t size)
@@ -44,11 +43,10 @@ char				*ft_realloc_str(char *str, size_t size)
 
 	if (str != NULL)
 	{
-		if (ft_strlen(str) > size)
-			return (NULL);
 		if ((r = malloc(size + 1)) == NULL)
 			return (NULL);
-		ft_strcpy(r, str);
+		ft_memcpy(r, str, size);
+		r[size] = 0;
 		free(str);
 	}
 	else
@@ -76,6 +74,7 @@ t_endl				*ft_get_current(const int fd, t_endl *current)
 		if ((current = malloc(sizeof(t_endl))) == NULL)
 			return (NULL);
 		current->fd = fd;
+		current->s = NULL;
 		current->next = current;
 		return (current);
 	}
@@ -92,6 +91,7 @@ t_endl				*ft_get_current(const int fd, t_endl *current)
 		return (NULL);
 	current = current->next;
 	current->fd = fd;
+	current->s = NULL;
 	current->next = tmp;
 	return (current);
 }
@@ -103,7 +103,7 @@ int					get_next_line(const int fd, char **line)
 	static t_endl	*current = NULL;
 
 	current = ft_get_current(fd, current);
-	*line = ft_realloc_str(*line, BUFF_SIZE);
+	*line = malloc(BUFF_SIZE);
 	i = 0;
 	while (read(fd, (*line) + i, BUFF_SIZE) == BUFF_SIZE)
 	{
