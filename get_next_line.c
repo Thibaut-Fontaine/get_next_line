@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2016/12/16 03:35:53 by tfontain         ###   ########.fr       */
+/*   Updated: 2016/12/16 05:48:02 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,27 @@ t_endl				*ft_get_current(const int fd, t_endl *current)
 	return (current);
 }
 
+/*
+** je considere que line a deja ete alloue
+*/
+
+int					get_next_line(const int fd, char **line)
+{
+	static t_endl	*current = NULL;
+	char			*head;
+
+	current = ft_get_current(fd, current);
+	*line = ft_realloc_str(*line, BUFF_SIZE);
+	head = *line;
+	while (read(fd, *line, BUFF_SIZE) == BUFF_SIZE)
+	{
+
+		*line = *line + BUFF_SIZE;
+	}
+	return (0);
+}
+
+/*
 int					get_next_line(const int fd, char **line)
 {
 	unsigned int	i;
@@ -121,4 +142,4 @@ int					get_next_line(const int fd, char **line)
 		return (1);
 	}
 	return (0);
-}
+}*/
