@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2016/12/16 06:20:05 by tfontain         ###   ########.fr       */
+/*   Updated: 2016/12/31 05:16:29 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,9 @@ int					get_next_line(const int fd, char **line)
 	while ((ret = read(fd, &((*line)[index]), BUFF_SIZE)) == BUFF_SIZE)
 	{
 		*line[index + BUFF_SIZE] = 0;
-		if ((nl = ft_find_nl(*line)) != -1)
+		if ((nl = ft_find_nl(*line)) != -1) // segfault here at the 3rd loop
 		{
+			current->s = ft_realloc_str(current->s, ft_strlen(&((*line)[nl]))); // pas sur
 			ft_memcpy(current->s, &((*line)[nl]), ft_strlen(&((*line)[nl])));
 			if ((*line = ft_realloc_str(*line, nl)) == NULL)
 				return (-1);
