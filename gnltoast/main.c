@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 00:18:49 by tfontain          #+#    #+#             */
-/*   Updated: 2016/12/16 06:24:47 by tfontain         ###   ########.fr       */
+/*   Updated: 2016/12/31 02:16:07 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "../get_next_line/get_next_line.h"
+#include "../get_next_line.h"
 
 #define main1
 
@@ -33,6 +33,7 @@ int				main(int argc, char **argv) // test get_next_line
 	ft_putnbr(fd);
 	ft_putchar('\n');
 	buffer = malloc(1);
+	buffer[0] = 0;
 	for (int k = 0 ; k < 10; ++k)
 	{
 		ft_putnbr(get_next_line(fd, &buffer));
