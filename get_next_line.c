@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/05 01:39:06 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/06 02:44:10 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ t_endl				*ft_generate_content(const int fd)
 	if ((tmp = malloc(sizeof(t_endl))) == NULL)
 		return (NULL);
 	tmp->fd = fd;
-	tmp->s = NULL;
+	tmp->s = malloc(1);
+	*(tmp->s) = '\0';
 	return (tmp);
 }
 
@@ -104,7 +105,31 @@ t_list				*ft_get_current(const int fd, t_list *current)
 int					get_next_line(const int fd, char **line)
 {
 	static t_list	*current = NULL;
+	unsigned int	len;
+	int				ret;
+	char			*nl;
 
 	current = ft_get_current(fd, current);
-	return (1);
+	if (!(*line = malloc(BUFF_SIZE + 1 + ft_strlen(((t_endl*)(current->content))->s))))
+		return (-1);
+	ft_strcpy(*line, ((t_endl*)(current->content))->s);
+	len = BUFF_SIZE + ft_strlen(((t_endl*)(current->content))->s);
+	while ((ret = read(fd, *line + len - BUFF_SIZE, BUFF_SIZE)) == BUFF_SIZE)
+	{
+		(*line)[len] = '\0';
+		//ft_putstr("->"); ft_putstr(*line); ft_putstr("<-\n"); ft_putnbr(len); ft_putstr("\n");
+		if ((nl = strchr(*line, '\n')) != NULL)
+		{
+			if ((((t_endl*)(current->content))->s = ft_realloc_str(((t_endl*)
+					(current->content))->s, ft_strlen(nl + 1) + 1)) == NULL)
+				return (-1);
+			ft_strcpy(((t_endl*)(current->content))->s, nl + 1);
+			return ((*nl = 0) == 0);
+		}
+		//ft_putstr("ok\n");
+		if (!(*line = ft_realloc_str(*line, len)))
+			return (-1);
+		len = BUFF_SIZE + len;
+	}
+	return (ret < BUFF_SIZE ? 0 : -1);
 }
