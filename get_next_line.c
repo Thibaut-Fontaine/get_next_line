@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/06 02:44:10 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/06 03:28:20 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** si il n'y a pas de newline dans la string, renvoie -1
 */
 
-int					ft_find_nl(char *s)
+/*int					ft_find_nl(char *s)
 {
 	char			*tmp;
 
@@ -28,7 +28,7 @@ int					ft_find_nl(char *s)
 	if (*s == 0)
 		return (-1);
 	return (s - tmp);
-}
+}*/
 
 /*
 ** - si str n'est pas NULL : malloc de size, copie size caracteres de str
@@ -110,14 +110,13 @@ int					get_next_line(const int fd, char **line)
 	char			*nl;
 
 	current = ft_get_current(fd, current);
-	if (!(*line = malloc(BUFF_SIZE + 1 + ft_strlen(((t_endl*)(current->content))->s))))
+	len = BUFF_SIZE + ft_strlen(((t_endl*)(current->content))->s);
+	if (!(*line = malloc(len + 1)))
 		return (-1);
 	ft_strcpy(*line, ((t_endl*)(current->content))->s);
-	len = BUFF_SIZE + ft_strlen(((t_endl*)(current->content))->s);
 	while ((ret = read(fd, *line + len - BUFF_SIZE, BUFF_SIZE)) == BUFF_SIZE)
 	{
 		(*line)[len] = '\0';
-		//ft_putstr("->"); ft_putstr(*line); ft_putstr("<-\n"); ft_putnbr(len); ft_putstr("\n");
 		if ((nl = strchr(*line, '\n')) != NULL)
 		{
 			if ((((t_endl*)(current->content))->s = ft_realloc_str(((t_endl*)
@@ -126,10 +125,8 @@ int					get_next_line(const int fd, char **line)
 			ft_strcpy(((t_endl*)(current->content))->s, nl + 1);
 			return ((*nl = 0) == 0);
 		}
-		//ft_putstr("ok\n");
-		if (!(*line = ft_realloc_str(*line, len)))
+		if (!(*line = ft_realloc_str(*line, len += BUFF_SIZE)))
 			return (-1);
-		len = BUFF_SIZE + len;
 	}
 	return (ret < BUFF_SIZE ? 0 : -1);
 }

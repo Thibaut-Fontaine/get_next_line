@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/04 19:54:11 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/06 02:43:00 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/06 03:41:31 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int				main(int argc, char **argv)
 {
-	if (argc != 2)
+	if (argc < 2)
 		return (EXIT_FAILURE);
 	/*t_list		*current = NULL;
 
@@ -30,18 +30,32 @@ int				main(int argc, char **argv)
 	ft_putnbr(((t_endl*)(current->content))->fd);
 	ft_putstr(((t_endl*)(current->content))->s);*/
 	char		*line;
-	int			fd;
+	int			fd1;
+	int			fd2;
+	int			fd3;
+	int			ret;
 
-	fd = open(argv[1], O_RDONLY);
+	fd1 = open(argv[1], O_RDONLY);
+	fd2 = open(argv[1], O_RDONLY);
+	fd3 = open(argv[1], O_RDONLY);
+	ret = 1;
+	while (ret)
+	{
+		ret = get_next_line(fd1, &line) * ret;
+		ft_putstr(line); ft_putstr("\n");
+		free(line);
 
-	get_next_line(fd, &line);
-	ft_putstr("\noutput ->"); ft_putstr(line); ft_putstr("<-\n");
-	free(line);
-	get_next_line(fd, &line);
-	ft_putstr("\noutput ->"); ft_putstr(line); ft_putstr("<-\n");
-	close(fd);
+		ret = get_next_line(fd2, &line) * ret;
+		ft_putstr(line); ft_putstr("\n");
+		free(line);
 
-	char l;
-	while (read(0, &l, 1));
+		ret = get_next_line(fd3, &line) * ret;
+		ft_putstr(line); ft_putstr("\n");
+		free(line);
+	}
+
+	close(fd1);
+	close(fd2);
+	close(fd3);
 	return (0);
 }
