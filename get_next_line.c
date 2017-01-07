@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/07 17:47:57 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/07 18:11:59 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ t_list				*ft_generate_list(const int fd)
 	free(tmp);
 	return (ret);
 }
+
+/*
+** cette fonction sert a supprimer un maillon de la liste circulaire,
+** a la fin de l'utilisation d'un fichier notamment
+** mais ce n'est pas indispensable
+*/
 
 /*int					ft_del_content(t_list **current)
 {
