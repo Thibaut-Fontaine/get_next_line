@@ -6,29 +6,11 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/06 03:28:20 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/07 17:47:57 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./get_next_line.h"
-
-/*
-** cherche le prochain newline dans une string et renvoie son emplacement
-** commencant donc a 0, puis 1, 2, 3, etc...
-** si il n'y a pas de newline dans la string, renvoie -1
-*/
-
-/*int					ft_find_nl(char *s)
-{
-	char			*tmp;
-
-	tmp = s;
-	while (*s && *s != '\n')
-		++s;
-	if (*s == 0)
-		return (-1);
-	return (s - tmp);
-}*/
 
 /*
 ** - si str n'est pas NULL : malloc de size, copie size caracteres de str
@@ -59,17 +41,38 @@ char				*ft_realloc_str(char *str, size_t size)
 	return (r);
 }
 
-t_endl				*ft_generate_content(const int fd)
+t_list				*ft_generate_list(const int fd)
 {
 	t_endl			*tmp;
+	t_list			*ret;
 
 	if ((tmp = malloc(sizeof(t_endl))) == NULL)
 		return (NULL);
 	tmp->fd = fd;
 	tmp->s = malloc(1);
 	*(tmp->s) = '\0';
-	return (tmp);
+	ret = ft_lstnew(tmp, sizeof(t_endl));
+	free(tmp);
+	return (ret);
 }
+
+/*int					ft_del_content(t_list **current)
+{
+	t_list			*pt;
+	int				f_fd;
+
+	free(((t_endl*)((*current)->content))->s);
+	f_fd = ((t_endl*)((*current)->content))->fd;
+	while ((pt = *current))
+	{
+		*current = (*current)->next;
+		if (((t_endl*)((*current)->content))->fd == f_fd)
+			break ;
+	}
+	pt->next = (*current)->next;
+	free((*current)->content);
+	return (0);
+}*/
 
 /*
 ** si le maillon envoye est NULL, renvoie un malloc avec le fd
@@ -84,7 +87,7 @@ t_list				*ft_get_current(const int fd, t_list *current)
 
 	if (current == NULL)
 	{
-		if (!(current = ft_lstnew(ft_generate_content(fd), sizeof(t_endl))))
+		if (!(current = ft_generate_list(fd)))
 			return (NULL);
 		return (current->next = current);
 	}
@@ -96,8 +99,7 @@ t_list				*ft_get_current(const int fd, t_list *current)
 		if (((t_endl*)(current->content))->fd == f_fd)
 			break ;
 	}
-	if (!(current = ft_lstinsert(&current, ft_lstnew(ft_generate_content(fd),
-						sizeof(t_endl)), 2)))
+	if (!(current = ft_lstinsert(&current, ft_generate_list(fd), 2)))
 		return (NULL);
 	return (current);
 }
@@ -128,5 +130,5 @@ int					get_next_line(const int fd, char **line)
 		if (!(*line = ft_realloc_str(*line, len += BUFF_SIZE)))
 			return (-1);
 	}
-	return (ret < BUFF_SIZE ? 0 : -1);
+	return (ret < BUFF_SIZE ? /*ft_del_content(&current)*/0 : -1);
 }
