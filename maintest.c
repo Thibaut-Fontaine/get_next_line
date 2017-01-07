@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/04 19:54:11 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/07 17:48:01 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/07 20:04:51 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ int				main(int argc, char **argv)
 	ret = 1;
 	count = 1;
 
-	while (ret)
+	while (get_next_line(fd1, &line))
 	{
-		ret = get_next_line(fd1, &line) * ret;
 		ft_putstr("");
 		ft_putstr(line);
 		ft_putstr("");

@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 16:49:40 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/07 18:11:59 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/07 22:00:09 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int					get_next_line(const int fd, char **line)
 {
 	static t_list	*current = NULL;
 	unsigned int	len;
-	int				ret;
 	char			*nl;
 
 	current = ft_get_current(fd, current);
@@ -122,7 +121,7 @@ int					get_next_line(const int fd, char **line)
 	if (!(*line = malloc(len + 1)))
 		return (-1);
 	ft_strcpy(*line, ((t_endl*)(current->content))->s);
-	while ((ret = read(fd, *line + len - BUFF_SIZE, BUFF_SIZE)) == BUFF_SIZE)
+	while ((read(fd, *line + len - BUFF_SIZE, BUFF_SIZE)) == BUFF_SIZE)
 	{
 		(*line)[len] = '\0';
 		if ((nl = strchr(*line, '\n')) != NULL)
@@ -136,5 +135,5 @@ int					get_next_line(const int fd, char **line)
 		if (!(*line = ft_realloc_str(*line, len += BUFF_SIZE)))
 			return (-1);
 	}
-	return (ret < BUFF_SIZE ? /*ft_del_content(&current)*/0 : -1);
+	return (BUFF_SIZE ? 0 : -1);
 }

@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 20:36:22 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/07 18:01:47 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/07 22:00:00 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include "libft.h"
 
-# define BUFF_SIZE 100
+# define BUFF_SIZE 1
 
 /*
 **  la liste est utilisee de maniere circulaire, parce-que c'est rigolo
