@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/05 20:36:22 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/19 22:48:30 by tfontain         ###   ########.fr       */
+/*   Created: 2017/01/11 22:01:08 by tfontain          #+#    #+#             */
+/*   Updated: 2017/01/19 22:48:50 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include <fcntl.h>
+#include "./get_next_line.h"
 
-# include <sys/types.h>
-# include <sys/uio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include "libft.h"
+int			main(int argc, char **argv)
+{
+	if (argc != 2)
+		return (0);
+	int		fd;
+	char	*line;
+	int		r;
+	size_t	k;
 
-# define BUFF_SIZE 1000
-
-int					get_next_line(const int fd, char **line);
-
-#endif
+	r = 1;
+	fd = open(argv[1], O_RDONLY);
+	k = 0;
+	while ((r = get_next_line(fd, &line)) == 1 || r == -1)
+	{
+		ft_putstr("=>"); ft_putstr(line); ft_putstr("\n");
+	}
+	//char l;
+	//while (read(0, &l, 1));
+	close(fd);
+	return (0);
+}
