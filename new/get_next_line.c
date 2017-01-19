@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 21:06:23 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/19 22:49:43 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/19 23:46:44 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,20 @@ int				get_next_line(const int fd, char **line)
 	char		*chr;
 	size_t		len;
 	int			r;
-	int			in;
 
 	if (s == NULL)
-			s = ft_memalloc(1);
-	in = 0;
+		if ((s = ft_memalloc(BUFF_SIZE)) == NULL)
+			return (-1);
 	r = BUFF_SIZE;
 	if ((chr = ft_strchr(s, '\n')) == NULL)
 	{
 		len = ft_strlen(s);
-		s = ft_realloc_str(s, BUFF_SIZE);
 		while (ft_strchr(s, '\n') == NULL && r == BUFF_SIZE)
 		{
 			if ((r = read(fd, s + len, BUFF_SIZE)) == -1)
 				return (-1);
-			s = ft_realloc_str(s, len += BUFF_SIZE);
+			if ((s = ft_realloc_str(s, len += BUFF_SIZE)) == NULL)
+				return (-1);
 		}
 	}
 	chr = ft_strchr(s, '\n');
