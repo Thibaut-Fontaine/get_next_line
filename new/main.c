@@ -5,32 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/11 22:01:08 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/19 22:48:50 by tfontain         ###   ########.fr       */
+/*   Created: 2017/01/20 01:27:06 by tfontain          #+#    #+#             */
+/*   Updated: 2017/01/20 12:09:56 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
 #include "./get_next_line.h"
+#include <fcntl.h>
 
 int			main(int argc, char **argv)
 {
-	if (argc != 2)
-		return (0);
 	int		fd;
 	char	*line;
-	int		r;
-	size_t	k;
 
-	r = 1;
+	if (argc != 2)
+		return (EXIT_FAILURE);
 	fd = open(argv[1], O_RDONLY);
-	k = 0;
-	while ((r = get_next_line(fd, &line)) == 1 || r == -1)
+	while (get_next_line(fd, &line) == 1)
 	{
-		ft_putstr("=>"); ft_putstr(line); ft_putstr("\n");
+		ft_putstr(line);
+		ft_putstr("\n");
+		free(line);
 	}
-	//char l;
-	//while (read(0, &l, 1));
 	close(fd);
-	return (0);
+
+	return (EXIT_SUCCESS);
 }
