@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 21:06:23 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/19 23:46:44 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/20 01:03:36 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,24 @@ int				get_next_line(const int fd, char **line)
 		}
 	}
 	chr = ft_strchr(s, '\n');
-	if (r < BUFF_SIZE && chr == NULL)
-		return (0);
-	*line = ft_memalloc(chr - s);
-	ft_memcpy(*line, s, chr - s);
-	(*line)[chr - s] = 0;
-	ft_memmove(s, chr + 1, ft_strlen(chr + 1) + 1);
+	if (chr == NULL)
+	{
+		if (*s != 0)
+		{
+			*line = ft_memalloc(ft_strlen(s));
+			ft_memcpy(*line, s, ft_strlen(s));
+			(*line)[ft_strlen(s)] = 0;
+			*s = 0;
+		}
+		else
+			return (0);
+	}
+	else
+	{
+		*line = ft_memalloc(chr - s);
+		ft_memcpy(*line, s, chr - s);
+		(*line)[chr - s] = 0;
+		ft_memmove(s, chr + 1, ft_strlen(chr + 1) + 1);
+	}
 	return (1);
 }
