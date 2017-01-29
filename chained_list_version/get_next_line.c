@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/23 23:27:02 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/27 03:47:48 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/28 23:40:23 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 ** get the next line from buffers, malloc it to fill *line
 ** if there is no \n, return NULL
 */
+
+/*char				*ft_glfb(t_stack **current)
+{
+	char			*line;
+
+	strchr((*current)->pt, '\n');
+	return (line);
+}*/
 
 char				*ft_glfb(t_stack **head)
 {
@@ -36,15 +44,21 @@ char				*ft_glfb(t_stack **head)
 			return (NULL);
 	}
 	len += ch - current->pt;
+	// jusqu'ici on ne fait que calculer la taille de line pour pouvoir malloc
+	// donc c'est divisible en une autre fonction qui renvoie juste len.
 	line = malloc(len);
 	line_head = line;
 	while ((ch = ft_strchr((*head)->pt, '\n')) == NULL)
 	{
 		ft_strcpy(line, (*head)->pt);
 		line += ft_strlen((*head)->pt);
-		*head = (*head)->next;
+		free((*head)->buff);
+		ch = (void*)(*head);
+		*head = (*head)->next; //free les maillons avant de reattribuer *head
+		free((t_stack*)ch);
 	}
-	ft_strncpy(line, (*head)->pt, ch - (*head)->pt);
+	ft_strncpy(line, (*head)->pt, (len = ch - (*head)->pt));
+	line[len] = 0;
 	(*head)->pt = ch + 1;
 	return (line_head);
 }
@@ -73,6 +87,29 @@ int					get_next_line(const int fd, char **line)
 	static t_head	head = {NULL, NULL};
 	int				r;
 
+	*line = NULL;
+	while (1)
+	{
+		head.current = ft_generate_new(head.head);
+		if (head.head == NULL)
+			head.head = head.current;
+		if ((r = read(fd, head.current->buff, BUFF_SIZE)) == -1)
+			return (-1);
+		if (r == 0 && *(head.current->pt) == 0/* && *(head.current->next->pt) == 0*/)
+			return (0);
+		if (r < BUFF_SIZE && head.current->buff[r] != '\n')
+			head.current->buff[r++] = '\n';	// ajoute un \n et on deplace r
+		head.current->buff[r] = '\0';		// on NUL-termine dans tous les cas.
+		if ((*line = ft_glfb(&head.head)) != NULL)
+			return (1);
+	}
+}
+
+/*int				get_next_line(const int fd, char **line)
+{
+	static t_head	head = {NULL, NULL};
+	int				r;
+
 	while (1)
 	{
 		head.current = ft_generate_new(head.head);
@@ -88,7 +125,8 @@ int					get_next_line(const int fd, char **line)
 		if ((*line = ft_glfb(&head.head)) != NULL)
 			return (1);
 	}
-}
+}*/
+
 /*
 ** on read 1 fois
 ** si r vaut 0, que le buffer est vide et que current->s est vide, return 0

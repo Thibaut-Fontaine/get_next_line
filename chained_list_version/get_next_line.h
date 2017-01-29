@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 20:36:22 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/27 03:55:29 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/29 01:02:56 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include "./libft/includes/libft.h"
 
-# define BUFF_SIZE 5
+# define BUFF_SIZE 1000
 
 typedef struct		s_stack
 {
