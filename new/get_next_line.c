@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/23 23:27:02 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/31 04:14:33 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/31 04:31:48 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int					get_next_line(const int fd, char **line)
 {
 	static t_list	*current = NULL;
 	char			buff[BUFF_SIZE + 1];
-	char			*tmp;
 	char			*ch;
 	int				r;
 
@@ -68,9 +67,7 @@ int					get_next_line(const int fd, char **line)
 	while ((r = read(fd, buff, BUFF_SIZE)) != -1)
 	{
 		buff[r] = '\0';
-		tmp = S;
-		S = ft_strjoin(S, buff);
-		free(tmp);
+		S = ft_strfjoin(&S, buff);
 		if (r < BUFF_SIZE && *S == 0)
 			return (0);
 		if ((ch = ft_strchr(S, '\n')) != NULL)

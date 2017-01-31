@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 20:36:22 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/31 04:18:14 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/31 04:19:49 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include "libft.h"
 
-# define BUFF_SIZE 5000
+# define BUFF_SIZE 5
 # define S (((t_endl*)current->content)->s)
 
 typedef struct	s_endl
