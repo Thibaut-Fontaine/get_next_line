@@ -6,38 +6,77 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/23 23:27:02 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/31 02:59:35 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/31 04:14:33 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./get_next_line.h"
 
-int				get_next_line(const int fd, char **line)
+t_list				*ft_generate_list(const int fd)
 {
-	static char	*s = NULL;
-	char		buff[BUFF_SIZE + 1];
-	char		*tmp;
-	char		*ch;
-	int			r;
+	t_endl			*tmp;
+	t_list			*ret;
 
-	if (s == NULL)
-		s = ft_memalloc(1);
-	else if (ft_strchr(s, '\n'))
-		ft_memmove(s, ft_strchr(s, '\n') + 1, ft_strlen(ft_strchr(s, '\n')));
+	if ((tmp = malloc(sizeof(t_endl))) == NULL)
+		return (NULL);
+	tmp->fd = fd;
+	tmp->s = malloc(1);
+	*(tmp->s) = '\0';
+	ret = ft_lstnew(tmp, sizeof(t_endl));
+	free(tmp);
+	return (ret);
+}
+
+t_list				*ft_get_current(const int fd, t_list *current)
+{
+	int				f_fd;
+
+	if (current == NULL)
+	{
+		if (!(current = ft_generate_list(fd)))
+			return (NULL);
+		return (current->next = current);
+	}
+	f_fd = ((t_endl*)(current->content))->fd;
+	while ((current = current->next))
+	{
+		if (((t_endl*)(current->content))->fd == fd)
+			return (current);
+		if (((t_endl*)(current->content))->fd == f_fd)
+			break ;
+	}
+	if (!(current = ft_lstinsert(&current, ft_generate_list(fd), 2)))
+		return (NULL);
+	return (current);
+}
+
+int					get_next_line(const int fd, char **line)
+{
+	static t_list	*current = NULL;
+	char			buff[BUFF_SIZE + 1];
+	char			*tmp;
+	char			*ch;
+	int				r;
+
+	current = ft_get_current(fd, current);
+	if (S == NULL)
+		S = ft_memalloc(1);
+	else if (ft_strchr(S, '\n'))
+		ft_memmove(S, ft_strchr(S, '\n') + 1, ft_strlen(ft_strchr(S, '\n')));
 	else
-		*s = 0;
+		*S = 0;
 	while ((r = read(fd, buff, BUFF_SIZE)) != -1)
 	{
 		buff[r] = '\0';
-		tmp = s;
-		s = ft_strjoin(s, buff);
+		tmp = S;
+		S = ft_strjoin(S, buff);
 		free(tmp);
-		if (r < BUFF_SIZE && *s == 0)
+		if (r < BUFF_SIZE && *S == 0)
 			return (0);
-		if ((ch = ft_strchr(s, '\n')) != NULL)
-			return (ft_strncpy(*line = ft_strnew(ch - s), s, ch - s) ? 1 : -1);
+		if ((ch = ft_strchr(S, '\n')) != NULL)
+			return (ft_strncpy(*line = ft_strnew(ch - S), S, ch - S) ? 1 : -1);
 		if (r < BUFF_SIZE)
-			return (ft_strcpy(*line = ft_strnew(ft_strlen(s)), s) ? 1 : -1);
+			return (ft_strcpy(*line = ft_strnew(ft_strlen(S)), S) ? 1 : -1);
 	}
 	return (-1);
 }

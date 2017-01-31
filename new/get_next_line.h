@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 20:36:22 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/20 01:38:27 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/01/31 04:18:14 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@
 # include "libft.h"
 
 # define BUFF_SIZE 5000
+# define S (((t_endl*)current->content)->s)
 
-int					get_next_line(const int fd, char **line);
+typedef struct	s_endl
+{
+	int			fd;
+	char		*s;
+}				t_endl;
+
+int				get_next_line(const int fd, char **line);
 
 #endif
