@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 01:27:06 by tfontain          #+#    #+#             */
-/*   Updated: 2017/01/26 19:33:30 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/02/06 02:41:03 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int			main(int argc, char **argv)
 	char	*line;
 
 	if (argc != 2)
+	{
+		ft_putstr("trop ou pas assez d'arguments\n");
 		return (EXIT_FAILURE);
+	}
 	fd = open(argv[1], O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 	{
