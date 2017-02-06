@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 20:36:22 by tfontain          #+#    #+#             */
-/*   Updated: 2017/02/06 04:24:55 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/02/06 23:56:52 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 typedef struct		s_stack
 {
 	char			*pt;
-	char			*buff;
+	char			buff[BUFF_SIZE + 1];
 	struct s_stack	*next;
 }					t_stack;
 
@@ -32,6 +32,8 @@ typedef struct		s_head
 {
 	t_stack			*head;
 	t_stack			*current;
+	int				end;
+
 }					t_head;
 
 int					get_next_line(const int fd, char **line);

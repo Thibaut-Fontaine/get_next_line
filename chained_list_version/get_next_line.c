@@ -6,7 +6,7 @@
 /*   By: tfontain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/23 23:27:02 by tfontain          #+#    #+#             */
-/*   Updated: 2017/02/06 08:00:29 by tfontain         ###   ########.fr       */
+/*   Updated: 2017/02/07 00:14:36 by tfontain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ char				*ft_generate_line(t_stack **head, int len)
 	{
 		ft_strcpy(line, (*head)->pt);
 		line += ft_strlen((*head)->pt);
-		free((*head)->buff);
 		ch = (void*)(*head);
 		*head = (*head)->next;
 		free((t_stack*)ch);
@@ -78,7 +77,6 @@ t_stack				*ft_generate_new(t_stack *current)
 	else
 		current = malloc(sizeof(t_stack));
 	current->next = NULL;
-	current->buff = malloc(BUFF_SIZE + 1);
 	*(current->buff) = 0;
 	current->pt = current->buff;
 	return (current);
@@ -86,28 +84,29 @@ t_stack				*ft_generate_new(t_stack *current)
 
 int						get_next_line(const int fd, char **line)
 {
-	static t_head		head = {NULL, NULL};
+	static t_head		head = {NULL, NULL, 0};
 	int					r;
 	int					len;
 
 	head.current = ft_generate_new(head.head);
 	if (head.head == NULL)
 		head.head = head.current;
-	while ((len = ft_getlen(head.head)) == -1)
+	while ((len = ft_getlen(head.head)) == -1 && head.end == 0)
 	{
 		if ((r = read(fd, head.current->buff, BUFF_SIZE)) == -1)
 			return (-1);
-		if (r == 0 && *(head.head->pt) == 0 && head.head->next == NULL)
-			return (0);
-		if (r < BUFF_SIZE)
+		if (r < BUFF_SIZE && head.current->buff[r - 1] != '\n')
 		{
 			head.current->buff[r] = '\n';
 			head.current->buff[r + 1] = 0;
+			head.end = 1;
 			break ;
 		}
 		head.current->buff[r] = 0;
 		head.current = ft_generate_new(head.head);
 	}
+	if (ft_getlen(head.head) == -1)
+		return (0);
 	*line = ft_generate_line(&head.head, len);
 	return (1);
 }
